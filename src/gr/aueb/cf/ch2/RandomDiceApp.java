@@ -1,0 +1,13 @@
+package gr.aueb.cf.ch2;
+
+public class RandomDiceApp {
+    public static void main(String[] args) {
+        int die1 = 0;
+        int die2 = 0;
+
+        die1 = (int) (Math.random() * 6) + 1;
+        die2 = (int) (Math.random() * 6) + 1;
+
+        System.out.printf("Πρώτο ζάρι: %d \nΔεύτερο ζάρι: %d", die1, die2);
+    }
+}
