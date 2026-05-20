@@ -1,5 +1,10 @@
 package gr.aueb.cf.ch11;
 
+/**
+ * Main class for testing the Student class.
+ */
+
+
 public class Main {
 
     public static void main(String[] args) {
