@@ -12,6 +12,13 @@ public class Main {
         Student bob = new Student();
         Student student = new Student();
 
+        Teacher teacher = new Teacher();
+
+        Teacher teacher2 = new Teacher(1, "Μάκης", "Καπέτης");
+
+        teacher2.setFirstname("Χρυσόστομος");
+        System.out.println("Teacher 2 Firstname: " + teacher2.getFirstname());
+
         System.out.println("Student instances count: "+ Student.getStudentCount());
 
         Student student2 = new Student(4, "Dennis", "D.");
