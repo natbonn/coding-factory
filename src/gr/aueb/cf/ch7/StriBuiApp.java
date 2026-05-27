@@ -19,5 +19,7 @@ public class StriBuiApp {
                 .reverse()
                 .toString();
 
+        System.out.println("Result: " + result);
+        System.out.println("Reversed: " + reversed);
     }
 }
