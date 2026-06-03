@@ -115,6 +115,11 @@ public class Account {
     }
 
     // Design Pattern - Delegation (αναθέτω στη μέθοδο να κάνει κάτι για μένα)
+
+    /**
+     * Get the account balance
+     * @return the account balance
+     */
     public double getAccountBalance() {
         return getBalance();
     }
