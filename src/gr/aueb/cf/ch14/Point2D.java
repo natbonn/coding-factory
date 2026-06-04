@@ -24,10 +24,17 @@ public class Point2D extends Point {
     @Override
     public void movePlusOne() {
         super.movePlusOne();
+        y += 1;
     }
 
     @Override
     protected void movePlus10() {
         super.movePlus10();
+        y += 10;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + getX() + ", " + y + ")";
     }
 }
