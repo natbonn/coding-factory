@@ -1,5 +1,6 @@
 package gr.aueb.cf.ch14.bankapp;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Account {
@@ -72,20 +73,22 @@ public class Account {
     }
 
     // Public API - Contract
+
+
     /**
      * Deposit a specific amount of money into the account
      *
-     * @param amount        the amount of money to deposit
-     * @throws Exception    if the amount is negative.
+     * @param amount                       the amount of money to deposit
+     * @throws NegativeAmmountException    if the amount is negative.
      */
-    public void deposit(double amount) throws Exception {
+    public void deposit(double amount) throws NegativeAmmountException {
         try {
             if (amount < 0) {
-                throw new Exception("Amount must be positive");
+                throw new NegativeAmmountException("Amount must be positive");
             }
             balance += amount;
             // audit trail: who, when, what, initial balance, resulting balance
-        } catch (Exception e) {
+        } catch (NegativeAmmountException e) {
             System.err.printf("Negative amount=%f is not allowed. \n%s\n",
                     amount, e.getMessage());
             throw e;
@@ -100,22 +103,22 @@ public class Account {
      * @throws Exception    if the amount is negative, the balance is insufficient,
      *                      or the ssn is not valid.
      */
-    public void withdraw(double amount, String ssn) throws Exception {
+    public void withdraw(double amount, String ssn)
+            throws NegativeAmmountException, InsufficientBalanceException, SsnNotValidException {
         try {
-            if (amount < 0) throw new Exception("Amount must be positive.");
-            if (amount > balance) throw new Exception("This Balance is not sufficient.");
-            if (!isSsnValid(ssn)) throw new Exception("SSN is not valid.");
+            if (amount < 0) throw new NegativeAmmountException("Amount= " + amount + " must be positive.");
+            if (amount > balance) throw new InsufficientBalanceException("This Balance= " + balance + " is not sufficient.");
+            if (!isSsnValid(ssn)) throw new SsnNotValidException("SSN= " + ssn + " is not valid.");
             balance -= amount;
             //audit trail:who, when, what, initial balance, resulting balance
-        } catch (Exception e) {
-            System.err.printf(" Withdrawal of amount=%f failed. \n%s\n", amount, e.getMessage());
+        } catch (NegativeAmmountException | InsufficientBalanceException | SsnNotValidException e) {
+            System.err.printf(LocalDateTime.now() + " Withdrawal of amount=%f failed. \n%s\n", amount, e.getMessage());   // logging
             throw e;
         }
 
     }
 
     // Design Pattern - Delegation (αναθέτω στη μέθοδο να κάνει κάτι για μένα)
-
     /**
      * Get the account balance
      * @return the account balance
