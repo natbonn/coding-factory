@@ -17,9 +17,9 @@ public class Main {
         Teacher teacher2 = new Teacher(1, "Μάκης", "Καπέτης");
 
         teacher2.setFirstname("Χρυσόστομος");
-        System.out.println("Teacher 2 Firstname: " + teacher2.getFirstname());
+        System.out.println("Student 2 Firstname: " + teacher2.getFirstname());
 
-        System.out.println("Student instances count: "+ Student.getStudentCount());
+        System.out.println("Student instances count: "+ gr.aueb.cf.ch11.Student.getStudentCount());
 
         Student student2 = new Student(4, "Dennis", "D.");
         Student student3 = new Student(5, "Eva", "P.");

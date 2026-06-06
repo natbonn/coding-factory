@@ -1,22 +1,24 @@
-package gr.aueb.cf.ch11;
+package gr.aueb.cf.ch15.abstract_classes;
 
 /**
  * Student POJO (Plain Old Java Object) - Java Bean
  */
 
-public class Teacher {
+public class Student {
     private int id;
     private String firstname;
     private String lastname;
+    private String region;
 
-    public Teacher() {
+    public Student() {
 
     }
 
-    public Teacher(int id, String firstname, String lastname) {
+    public Student(int id, String firstname, String lastname, String region) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.region = region;
     }
 
     public int getId() {
@@ -47,5 +49,13 @@ public class Teacher {
     public void setLastname(String lastname) {
 
         this.lastname = lastname;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 }
