@@ -3,8 +3,8 @@ package gr.aueb.cf.ch15.interfaces;
 public class Main {
 
     public static void main(String[] args) {
-        ISchoolService studentService = new StudentSerivceImpl();
-        ISchoolService teacherService = new TeacherSerivceImpl();
+        ISchoolService studentService = new StudentServiceImpl();
+        ISchoolService teacherService = new TeacherServiceImpl();
 
         studentService.register();
         teacherService.register();

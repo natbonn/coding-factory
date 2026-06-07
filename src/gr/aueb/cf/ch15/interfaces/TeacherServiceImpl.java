@@ -1,6 +1,6 @@
 package gr.aueb.cf.ch15.interfaces;
 
-public class TeacherSerivceImpl implements ISchoolService {
+public class TeacherServiceImpl implements ISchoolService {
 
     @Override
     public void register() {
