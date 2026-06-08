@@ -11,7 +11,7 @@ public class Main {
 
         Thread t1 = new Thread(worker1);
         t1.start();
-        // σύντμηση κάτω
+        // σύντμηση από κάτω
         new Thread(worker2).start();
         new Thread(worker3).start();
         new Thread(worker4).start();
