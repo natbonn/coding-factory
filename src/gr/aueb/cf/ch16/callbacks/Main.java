@@ -24,6 +24,7 @@ public class Main {
             }
         });
 
+        // callback με χρήση lambda expression - σύντμηση μεθόδου
         doPrint(() -> System.out.println("Hello World!"));
 
         doPrint(() -> sayHello());      // Lambda expression
