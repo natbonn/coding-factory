@@ -10,7 +10,7 @@ public class GenericMethods {
         printArray(intArr);
     }
 
-    // Γενική μέθοδος
+    // Γενική μέθοδος χωρίς όριο
     public static <T> void printArray(T[] arr) {
         for (T el : arr) {
             System.out.println(el);
