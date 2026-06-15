@@ -22,7 +22,7 @@ public class SinglyList<T> {
         tmp.setNext(null);
 
         Node<T> n;
-        for (n = head; n.getNext() != null; n = n.getNext());
+        for (n = head; n.getNext() != null; n = n.getNext()) ;
         n.setNext(tmp);
     }
 
@@ -39,12 +39,39 @@ public class SinglyList<T> {
         }
 
         Node<T> n;
-        for (n = head; n.getNext().getNext() != null; n = n.getNext());
+        for (n = head; n.getNext().getNext() != null; n = n.getNext()) ;
 
         Node<T> nodeToReturn = n.getNext();
         n.setNext(null);
         return nodeToReturn;
     }
+
+    public Node<T> get(T t) {
+        Node<T> nodeToReturn = null;
+
+        for (Node<T> n = head; n != null; n = n.getNext()) {
+            if (n.getItem().equals(t)) {
+                nodeToReturn = n;
+                break;
+            }
+        }
+        return nodeToReturn;
+    }
+
+    public void traverse(T t) {
+        for (Node<T> n = head; n != null; n = n.getNext()) {
+            System.out.println(n.getItem());
+        }
+    }
+
+    public int size() {
+        int counter = 0;
+        for (Node<T> n = head; n != null; n = n.getNext()) {
+            counter++;
+        }
+        return counter;
+    }
+
 
     public boolean isEmpty() {
         return head == null;
