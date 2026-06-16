@@ -39,8 +39,14 @@ public class Product implements Comparable<Product> {
     }
 
     @Override
+    public String toString() {
+//        return String.format("%s: %f, %d", description, price, quantity);
+        return  description + ": " + price + ", " + quantity;    // the same
+    }
+
+    @Override
     public int compareTo(Product o) {
-//        return this.description.compareTo(o.description);
+        return this.description.compareTo(o.description);   // natural ordering
 //        if (this.quantity < o.quantity) {
 //            return -1;
 //        } else if (this.quantity > o.quantity) {
@@ -50,7 +56,7 @@ public class Product implements Comparable<Product> {
 //        }
 //        return this.quantity - o.quantity;    // σύντμηση του πάνω - ίδια λογική
 
-        return Double.compare(this.price, o.price);
+//        return Double.compare(this.price, o.price);
     }
 }
 
