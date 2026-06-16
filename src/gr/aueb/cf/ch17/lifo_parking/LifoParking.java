@@ -21,6 +21,10 @@ public class LifoParking {
     }
 
     public String removeCar() {
+        if (parking.isEmpty()) {
+            return null;
+        }
+
         String car = parking.pop();
         System.out.println(LocalDateTime.now() + ", Έξοδος, Αρ. Πινακίδας= " + car);
         return car;
