@@ -43,4 +43,4 @@ public record AccountReadOnlyDTO(String iban, BigDecimal balance) {
 //    public String toString() {
 //        return "IBAN: " + iban + ", Balance: " + balance;
 //    }
-}
+

@@ -1,5 +1,6 @@
 package gr.aueb.cf.ch18.bankapp;
 
+import gr.aueb.cf.ch18.bankapp.controller.AccountController;
 import gr.aueb.cf.ch18.bankapp.dto.AccountReadOnlyDTO;
 
 import java.math.BigDecimal;
@@ -7,6 +8,7 @@ import java.util.Scanner;
 
 public class Main {
 
+    private final static AccountController accountController = new AccountController();
     private final static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -28,9 +30,9 @@ public class Main {
 
                         AccountReadOnlyDTO readOnlyDTO = accountController.createNewAccount(iban, balance);
                         System.out.println("Ο λογαριασμός δημιουργήθηκε ή ανανεώθηκε επιτυχώς");
-                        System.out.println("IBAN: " + readOnlyDTO.iban() + "Υπόλοιπο: " + readOnlyDTO.balance());
-
+                        System.out.println("IBAN: " + readOnlyDTO.iban() + "\nΥπόλοιπο: " + readOnlyDTO.balance());
                     }
+                    default -> System.out.println("\n Μη έγκυρη επιλογή");
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -49,7 +51,7 @@ public class Main {
         System.out.println("    3. Κατάθεση");
         System.out.println("    4. Ανάληψη");
         System.out.println("    5. Ερώτηση υπολοίπου");
-        System.out.println("[Qq]  Έξοδος");
-        System.out.print("\n Εισάγετε μία επιλογή: ");
+        System.out.println("[Qq].  Έξοδος");
+        System.out.print("\nΕισάγετε μία επιλογή: ");
     }
 }
