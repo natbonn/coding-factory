@@ -11,21 +11,60 @@ import java.util.List;
 public class AccountController {
 
     // dummy - List
-    private final List<Account> accounts = new ArrayList<>();
+//    private final List<Account> accounts = new ArrayList<>();
 
     public AccountReadOnlyDTO createNewAccount(String iban, BigDecimal balance) {
         // Data binding
-        AccountInsertDTO insertDTO = new AccountInsertDTO(iban, balance);
+        // AccountInsertDTO insertDTO = new AccountInsertDTO(iban, balance);
         AccountReadOnlyDTO readOnlyDTO;
+
+        // 1.  Validation
+
+        // 2. Service Call
+        // readOnlyDTO = accountService.createAccount(insertDTO);
+
+        // Dummy Data
+        readOnlyDTO = new AccountReadOnlyDTO(iban, balance);
+        return readOnlyDTO;
+    }
+
+    public void deposit(String iban, BigDecimal amount) {
 
         // Validation
 
-        // Dummy - Extract
-        accounts.add(new Account(iban, balance));
+        // Dummy Data
+        if (iban.equals("GR12345")) {
+            throw new IllegalArgumentException("Account with IBAN: " + iban + " does not exist");
+        }
 
-        // Confirmation
-        readOnlyDTO = new AccountReadOnlyDTO(iban, balance);
-        return readOnlyDTO;
+        // Service Call
+        // accountService.deposit(iban, amount);
+    }
 
+    public void withdraw(String iban, BigDecimal amount) {
+
+        // Validation
+
+        // Dummy Data
+        if (iban.equals("GR12345")) {
+            throw new IllegalArgumentException("Account with IBAN: " + iban + " does not exist");
+        }
+
+        // Service Call
+        // accountService.withdraw(iban, amount);
+    }
+
+    public List<AccountReadOnlyDTO> getAllAccounts() {
+
+        // Validation
+
+        // Dummy Data
+        return List.of(new AccountReadOnlyDTO("GR12345", BigDecimal.valueOf(1000)),
+                new AccountReadOnlyDTO("GR12346", BigDecimal.valueOf(2000)),
+                new AccountReadOnlyDTO("GR12347", BigDecimal.valueOf(3000)),
+                new AccountReadOnlyDTO("GR12348", BigDecimal.valueOf(4000)));
+
+        // Service Call
+        // return accountService.getAllAccounts();
     }
 }

@@ -4,6 +4,7 @@ import gr.aueb.cf.ch18.bankapp.controller.AccountController;
 import gr.aueb.cf.ch18.bankapp.dto.AccountReadOnlyDTO;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -15,6 +16,7 @@ public class Main {
         String option;
         String iban;
         BigDecimal balance;
+
 
         while (true) {
             printMenu();
@@ -32,6 +34,45 @@ public class Main {
                         System.out.println("Ο λογαριασμός δημιουργήθηκε ή ανανεώθηκε επιτυχώς");
                         System.out.println("IBAN: " + readOnlyDTO.iban() + "\nΥπόλοιπο: " + readOnlyDTO.balance());
                     }
+                    case "2" -> {
+                        List<AccountReadOnlyDTO> readOnlyDTOS = accountController.getAllAccounts();
+
+                        if (readOnlyDTOS.isEmpty()) {
+                            System.out.println("\n Δεν βρέθηκαν λογαριασμοί");
+                        } else {
+                            System.out.println("\n--------------------------");
+                            System.out.println("|        Λογαριασμοί        |");
+                            System.out.println("\n--------------------------");
+                            readOnlyDTOS.forEach(System.out::println);
+                            System.out.println();
+                        }
+                    }
+                    case "3" -> {
+                        System.out.print("Παρακαλώ εισάγετε το IBAN: ");
+                        iban = scanner.nextLine().trim();
+                        System.out.print("Παρακαλώ εισάγετε το ποσό κατάθεσης: ");
+                        BigDecimal depositAmount = new BigDecimal(scanner.nextLine().trim());
+
+                        accountController.deposit(iban, depositAmount);
+                        System.out.println("\nΕπιτυχής κατάθεση");
+                        System.out.println("Ποσό κατάθεσης: " + depositAmount + ", Νέο Υπόλοιπο: "); //+
+//                                accountController.getBalance();
+                    }
+                    case "4" -> {
+                        System.out.print("Παρακαλώ εισάγετε το IBAN: ");
+                        iban = scanner.nextLine().trim();
+                        System.out.print("Παρακαλώ εισάγετε το ποσό ανάληψης: ");
+                        BigDecimal withdrawAmount = new BigDecimal(scanner.nextLine().trim());
+
+                        accountController.withdraw(iban, withdrawAmount);
+                        System.out.println("\n Επιτυχής ανάληψη");
+                        System.out.println("Ποσό κατάθεσης: " + withdrawAmount + ", Νέο υπόλοιπο: "); //+
+                        // accountController.getBalance();
+
+                    }
+
+
+
                     default -> System.out.println("\n Μη έγκυρη επιλογή");
                 }
             } catch (Exception e) {
