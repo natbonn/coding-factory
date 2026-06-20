@@ -17,7 +17,6 @@ public class Main {
         String iban;
         BigDecimal balance;
 
-
         while (true) {
             printMenu();
             option = scanner.nextLine().trim();
@@ -34,6 +33,7 @@ public class Main {
                         System.out.println("Ο λογαριασμός δημιουργήθηκε ή ανανεώθηκε επιτυχώς");
                         System.out.println("IBAN: " + readOnlyDTO.iban() + "\nΥπόλοιπο: " + readOnlyDTO.balance());
                     }
+
                     case "2" -> {
                         List<AccountReadOnlyDTO> readOnlyDTOS = accountController.getAllAccounts();
 
@@ -47,6 +47,7 @@ public class Main {
                             System.out.println();
                         }
                     }
+
                     case "3" -> {
                         System.out.print("Παρακαλώ εισάγετε το IBAN: ");
                         iban = scanner.nextLine().trim();
@@ -58,6 +59,7 @@ public class Main {
                         System.out.println("Ποσό κατάθεσης: " + depositAmount + ", Νέο Υπόλοιπο: "); //+
 //                                accountController.getBalance();
                     }
+
                     case "4" -> {
                         System.out.print("Παρακαλώ εισάγετε το IBAN: ");
                         iban = scanner.nextLine().trim();
@@ -68,10 +70,22 @@ public class Main {
                         System.out.println("\n Επιτυχής ανάληψη");
                         System.out.println("Ποσό κατάθεσης: " + withdrawAmount + ", Νέο υπόλοιπο: "); //+
                         // accountController.getBalance();
-
                     }
 
+                    case "5" -> {
+                        System.out.print("Παρακαλώ εισάγετε το IBAN: ");
+                        iban = scanner.nextLine().trim();
 
+                        balance = accountController.getBalance(iban);
+
+                        System.out.println("\n Υπόλοιπο: " + balance);
+                    }
+
+                    case "Q", "q" -> {
+                        System.out.println("\n Έξοδος");
+                        scanner.close();
+                        return;
+                    }
 
                     default -> System.out.println("\n Μη έγκυρη επιλογή");
                 }
