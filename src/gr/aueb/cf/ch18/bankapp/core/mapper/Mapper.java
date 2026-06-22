@@ -12,7 +12,7 @@ public class Mapper {
     private Mapper() {}
 
     public static Account mapToModelEntity(AccountInsertDTO insertDTO) {
-        return new Account(insertDTO.iban())
+        return new Account(insertDTO.iban(), insertDTO.balance());
     }
 
     public static AccountReadOnlyDTO mapToReadOnlyDTO(Account account) {
