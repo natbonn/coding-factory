@@ -72,10 +72,14 @@ public class AccountServiceImpl implements IAccountService {
             // audit trail: who, when, what, initial balance, resulting balance
         } catch (InsufficientBalanceException e) {
             System.err.printf("%s. The amount %f is greater than the balance of the account with IBAN: . \n",
-                    LocalDateTime.now(), withdrawDTO.amount(), withdrawDTO.iban());
+                    LocalDateTime.now(),
+                    withdrawDTO.amount(),
+                    withdrawDTO.iban());
             throw e;
         } catch (AccountNotFoundException e) {
-            System.err.printf("%s. Account with IBAN %s not found. \n", LocalDateTime.now(), withdrawDTO.iban());
+            System.err.printf("%s. Account with IBAN %s not found. \n",
+                    LocalDateTime.now(),
+                    withdrawDTO.iban());
             throw e;
         }
 
@@ -83,13 +87,25 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public void getBalance(String iban)
+    public BigDecimal getBalance(String iban)
             throws AccountNotFoundException {
-
+        try {
+            Account account = accountDAO.findByIban(iban)
+                    .orElseThrow(() -> new AccountNotFoundException("Account with IBAN: " + iban + " not found"));
+            return account.getBalance();
+        } catch (AccountNotFoundException e) {
+            System.err.printf("%s. Account with IBAN %s not found. \n",
+                    LocalDateTime.now(),
+                    iban
+            );
+            throw e;
+        }
     }
 
     @Override
     public List<AccountReadOnlyDTO> getAllAccounts() {
-        return List.of();
+        return accountDAO.findAll().stream()
+                .map(Mapper::mapToReadOnlyDTO)
+                .toList();
     }
 }
