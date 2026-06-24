@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class Validator {
 
+    // TODO: Split validation from business rules
+
     /**
      * No instances of this class should be available.
      */
@@ -46,8 +48,7 @@ public class Validator {
         return errors;
     }
 
-    public static Map<String, String> validateWithdrawDTO(AccountWithdrawDTO withdrawDTO)
-            throws AccountNotFoundException {
+    public static Map<String, String> validateWithdrawDTO(AccountWithdrawDTO withdrawDTO) {
         Map<String, String> errors = new HashMap<>();
 
         if (withdrawDTO.iban() == null || !withdrawDTO.iban().trim().matches("GR\\d{5,10}")) {

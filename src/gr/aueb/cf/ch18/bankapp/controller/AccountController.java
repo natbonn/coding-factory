@@ -1,8 +1,13 @@
 package gr.aueb.cf.ch18.bankapp.controller;
 
+import gr.aueb.cf.ch18.bankapp.core.exceptions.AccountNotFoundException;
+import gr.aueb.cf.ch18.bankapp.core.exceptions.InsuffficientBalanceException;
+import gr.aueb.cf.ch18.bankapp.core.exceptions.NegativeAmountException;
 import gr.aueb.cf.ch18.bankapp.core.exceptions.ValidationException;
+import gr.aueb.cf.ch18.bankapp.dto.AccountDepositDTO;
 import gr.aueb.cf.ch18.bankapp.dto.AccountInsertDTO;
 import gr.aueb.cf.ch18.bankapp.dto.AccountReadOnlyDTO;
+import gr.aueb.cf.ch18.bankapp.dto.AccountWithdrawDTO;
 import gr.aueb.cf.ch18.bankapp.model.Account;
 import gr.aueb.cf.ch18.bankapp.service.IAccountService;
 import gr.aueb.cf.ch18.bankapp.validation.Validator;
@@ -20,7 +25,8 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    public AccountReadOnlyDTO createNewAccount(String iban, BigDecimal balance) throws ValidationException {
+    public AccountReadOnlyDTO createNewAccount(String iban, BigDecimal balance)
+            throws NegativeAmountException, ValidationException {
         // Data binding
         AccountInsertDTO insertDTO = new AccountInsertDTO(iban, balance);
         AccountReadOnlyDTO readOnlyDTO;
@@ -40,30 +46,46 @@ public class AccountController {
         return readOnlyDTO;
     }
 
-    public void deposit(String iban, BigDecimal amount) {
+    public void deposit(String iban, BigDecimal amount)
+            throws AccountNotFoundException, NegativeAmountException, ValidationException {
+
+        // Data binding
+        AccountDepositDTO depositDTO = new AccountDepositDTO(iban, amount);
 
         // Validation
-
-        // Dummy Data
-        if (iban.equals("GR12345")) {
-            throw new IllegalArgumentException("Account with IBAN: " + iban + " does not exist");
+        Map<String, String> errors = Validator.validateDepositDTO(depositDTO);
+        if (!errors.isEmpty()) {
+            throw new ValidationException(errors.toString());
         }
 
-        // Service Call
-        // accountService.deposit(iban, amount);
+        // Service call
+        accountService.deposit(depositDTO);
     }
 
-    public void withdraw(String iban, BigDecimal amount) {
+    public void withdraw(String iban, BigDecimal amount)
+            throws AccountNotFoundException, InsuffficientBalanceException, ValidationException {
+
+        // Data binding
+        AccountWithdrawDTO withdrawDTO = new AccountWithdrawDTO(iban, amount);
+
 
         // Validation
-
-        // Dummy Data
-        if (iban.equals("GR12345")) {
-            throw new IllegalArgumentException("Account with IBAN: " + iban + " does not exist");
+        Map<String, String> validationErrors = Validator.validateWithdrawDTO(withdrawDTO);
+        if (!validationErrors.isEmpty()) {
+            throw new ValidationException(validationErrors.toString());
         }
 
-        // Service Call
-        // accountService.withdraw(iban, amount);
+        Map<String, String> balanceErrors = Validator.validateWithdrawBalance(withdrawDTO, accountService.getBalance(iban));
+        if (!balanceErrors.isEmpty()) {
+            throw new InsuffficientBalanceException(balanceErrors.toString());
+        }
+
+//        // Dummy Data
+//        if (iban.equals("GR12345")) {
+//            throw new IllegalArgumentException("Account with IBAN: " + iban + " does not exist");
+//        }
+//        // Service Call
+//        // accountService.withdraw(iban, amount);
     }
 
     public BigDecimal getBalance(String iban) {
