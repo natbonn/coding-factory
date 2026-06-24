@@ -1,6 +1,7 @@
 package gr.aueb.cf.ch18.bankapp.service;
 
 import gr.aueb.cf.ch14.bankapp.InsufficientBalanceException;
+import gr.aueb.cf.ch14.bankapp.NegativeAmmountException;
 import gr.aueb.cf.ch18.bankapp.core.exceptions.AccountNotFoundException;
 import gr.aueb.cf.ch18.bankapp.core.exceptions.NegativeAmountException;
 import gr.aueb.cf.ch18.bankapp.core.mapper.Mapper;
@@ -23,13 +24,26 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public AccountReadOnlyDTO createNewAccount(AccountInsertDTO accountInsertDTO) {
-        // TODO: Validation
-        Account accountToReturn;
+    public AccountReadOnlyDTO createNewAccount(AccountInsertDTO accountInsertDTO)
+            throws NegativeAmountException {
 
-        Account account = Mapper.mapToModelEntity(accountInsertDTO);
-        accountToReturn = accountDAO.saveOrUpdate(account);
-        return Mapper.mapToReadOnlyDTO(accountToReturn);
+        try {
+            if (accountInsertDTO.balance().compareTo(BigDecimal.ZERO) < 0) {
+                throw new NegativeAmountException("The initial balance " + accountInsertDTO.balance() + " must not be negative");
+            }
+
+                Account accountToReturn;
+                Account account = Mapper.mapToModelEntity(accountInsertDTO);
+                accountToReturn = accountDAO.saveOrUpdate(account);
+                return Mapper.mapToReadOnlyDTO(accountToReturn);
+        } catch (NegativeAmountException e) {
+            System.err.printf("%s. The initial balance %f is not allowed. \n",
+                    LocalDateTime.now(),
+                    accountInsertDTO.balance());
+            throw e;
+        }
+
+
     }
 
     @Override

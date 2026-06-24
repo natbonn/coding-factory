@@ -1,5 +1,7 @@
 package gr.aueb.cf.ch18.bankapp.validation;
 
+import gr.aueb.cf.ch14.bankapp.InsufficientBalanceException;
+import gr.aueb.cf.ch18.bankapp.core.exceptions.AccountNotFoundException;
 import gr.aueb.cf.ch18.bankapp.dto.AccountDepositDTO;
 import gr.aueb.cf.ch18.bankapp.dto.AccountInsertDTO;
 import gr.aueb.cf.ch18.bankapp.dto.AccountWithdrawDTO;
@@ -44,7 +46,8 @@ public class Validator {
         return errors;
     }
 
-    public static Map<String, String> validateWithdrawDTO(AccountWithdrawDTO withdrawDTO) {
+    public static Map<String, String> validateWithdrawDTO(AccountWithdrawDTO withdrawDTO)
+            throws AccountNotFoundException {
         Map<String, String> errors = new HashMap<>();
 
         if (withdrawDTO.iban() == null || !withdrawDTO.iban().trim().matches("GR\\d{5,10}")) {
@@ -55,7 +58,14 @@ public class Validator {
         return errors;
     }
 
-    // TODO: Check if balance is not sufficient for withdrawal
+    public static Map<String, String> validateWithdrawBalance(AccountWithdrawDTO withdrawDTO, BigDecimal balance) {
+        Map<String, String> errors = new HashMap<>();
+
+        if (withdrawDTO.amount() == null || withdrawDTO.amount().compareTo(balance) > 0) {
+            errors.put("amount", "Το υπόλοιπο δεν επαρκεί. ");
+        }
+        return errors;
+    }
 
 
 }
