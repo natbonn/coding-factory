@@ -1,7 +1,5 @@
 package gr.aueb.cf.ch18.bankapp.validation;
 
-import gr.aueb.cf.ch14.bankapp.InsufficientBalanceException;
-import gr.aueb.cf.ch18.bankapp.core.exceptions.AccountNotFoundException;
 import gr.aueb.cf.ch18.bankapp.dto.AccountDepositDTO;
 import gr.aueb.cf.ch18.bankapp.dto.AccountInsertDTO;
 import gr.aueb.cf.ch18.bankapp.dto.AccountWithdrawDTO;
@@ -64,6 +62,15 @@ public class Validator {
 
         if (withdrawDTO.amount() == null || withdrawDTO.amount().compareTo(balance) > 0) {
             errors.put("amount", "Το υπόλοιπο δεν επαρκεί. ");
+        }
+        return errors;
+    }
+
+    public static Map<String, String> validateIban(String iban) {
+        Map<String, String> errors = new HashMap<>();
+
+        if (iban == null || !iban.trim().matches("gr\\d{5,10}")) {
+            errors.put("iban", "To iban πρέπει να ξεκινάει με GR και να ακολουθείται από 5-10 ψηφία.");
         }
         return errors;
     }

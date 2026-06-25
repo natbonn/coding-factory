@@ -1,20 +1,17 @@
 package gr.aueb.cf.ch18.bankapp.controller;
 
 import gr.aueb.cf.ch18.bankapp.core.exceptions.AccountNotFoundException;
-import gr.aueb.cf.ch18.bankapp.core.exceptions.InsuffficientBalanceException;
+import gr.aueb.cf.ch18.bankapp.core.exceptions.InsufficientBalanceException;
 import gr.aueb.cf.ch18.bankapp.core.exceptions.NegativeAmountException;
 import gr.aueb.cf.ch18.bankapp.core.exceptions.ValidationException;
 import gr.aueb.cf.ch18.bankapp.dto.AccountDepositDTO;
 import gr.aueb.cf.ch18.bankapp.dto.AccountInsertDTO;
 import gr.aueb.cf.ch18.bankapp.dto.AccountReadOnlyDTO;
 import gr.aueb.cf.ch18.bankapp.dto.AccountWithdrawDTO;
-import gr.aueb.cf.ch18.bankapp.model.Account;
 import gr.aueb.cf.ch18.bankapp.service.IAccountService;
 import gr.aueb.cf.ch18.bankapp.validation.Validator;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +60,7 @@ public class AccountController {
     }
 
     public void withdraw(String iban, BigDecimal amount)
-            throws AccountNotFoundException, InsuffficientBalanceException, ValidationException {
+            throws AccountNotFoundException, InsufficientBalanceException, ValidationException {
 
         // Data binding
         AccountWithdrawDTO withdrawDTO = new AccountWithdrawDTO(iban, amount);
@@ -75,26 +72,43 @@ public class AccountController {
             throw new ValidationException(validationErrors.toString());
         }
 
+        // Validation for business rules
         Map<String, String> balanceErrors = Validator.validateWithdrawBalance(withdrawDTO, accountService.getBalance(iban));
         if (!balanceErrors.isEmpty()) {
-            throw new InsuffficientBalanceException(balanceErrors.toString());
+            throw new InsufficientBalanceException(balanceErrors.toString());
         }
+
+        // Service Call
+        accountService.withdraw(withdrawDTO);
 
 //        // Dummy Data
 //        if (iban.equals("GR12345")) {
 //            throw new IllegalArgumentException("Account with IBAN: " + iban + " does not exist");
 //        }
-//        // Service Call
-//        // accountService.withdraw(iban, amount);
+
+//        //  Service call
+//
     }
 
-    public BigDecimal getBalance(String iban) {
-        // Dummy Data
-        if (iban.equals("GR12345")) {
-            throw new IllegalArgumentException("Account with IBAN: " + iban + " does not exist");
+    public BigDecimal getBalance(String iban)
+            throws AccountNotFoundException, ValidationException {
+
+        // Validation
+        Map<String, String> errors = Validator.validateIban(iban);
+        if (!errors.isEmpty()) {
+            throw new ValidationException(errors.toString());
         }
 
-        return new BigDecimal("1000");
+        // Service call
+        return accountService.getBalance(iban);
+
+
+        // Dummy Data
+//        if (iban.equals("GR12345")) {
+//            throw new IllegalArgumentException("Account with IBAN: " + iban + " does not exist");
+//        }
+//
+//        return new BigDecimal("1000");
 
         // Service Call
         // return accountService.getBalance(iban);
@@ -103,15 +117,15 @@ public class AccountController {
 
     public List<AccountReadOnlyDTO> getAllAccounts() {
 
-        // Validation
-
-        // Dummy Data
-        return List.of(new AccountReadOnlyDTO("GR12345", BigDecimal.valueOf(1000)),
-                new AccountReadOnlyDTO("GR12346", BigDecimal.valueOf(2000)),
-                new AccountReadOnlyDTO("GR12347", BigDecimal.valueOf(3000)),
-                new AccountReadOnlyDTO("GR12348", BigDecimal.valueOf(4000)));
-
         // Service Call
-        // return accountService.getAllAccounts();
+        return accountService.getAllAccounts();
+
+//      // Dummy Data
+//        return List.of(new AccountReadOnlyDTO("GR12345", BigDecimal.valueOf(1000)),
+//                new AccountReadOnlyDTO("GR12346", BigDecimal.valueOf(2000)),
+//                new AccountReadOnlyDTO("GR12347", BigDecimal.valueOf(3000)),
+//                new AccountReadOnlyDTO("GR12348", BigDecimal.valueOf(4000)));
+
+
     }
 }
