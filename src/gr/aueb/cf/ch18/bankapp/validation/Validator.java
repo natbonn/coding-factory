@@ -10,13 +10,13 @@ import java.util.Map;
 
 public class Validator {
 
-    // TODO: Split validation from business rules
-
     /**
      * No instances of this class should be available.
      */
 
     private Validator() {}
+
+    // TODO: Split validation from business rules
 
     public static Map<String, String> validateInsertDTO(AccountInsertDTO insertDTO) {
         Map<String, String> errors = new HashMap<>();
@@ -69,7 +69,7 @@ public class Validator {
     public static Map<String, String> validateIban(String iban) {
         Map<String, String> errors = new HashMap<>();
 
-        if (iban == null || !iban.trim().matches("gr\\d{5,10}")) {
+        if (iban == null || !iban.trim().matches("GR\\d{5,10}")) {
             errors.put("iban", "To iban πρέπει να ξεκινάει με GR και να ακολουθείται από 5-10 ψηφία.");
         }
         return errors;
