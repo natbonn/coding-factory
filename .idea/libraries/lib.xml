@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/src/gr/aueb/cf/ch18/bankapp_mysql/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/src/gr/aueb/cf/ch18/bankapp_mysql/lib" recursive="false" />
+  </library>
+</component>
