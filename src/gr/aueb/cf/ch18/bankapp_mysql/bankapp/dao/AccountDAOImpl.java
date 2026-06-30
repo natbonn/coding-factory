@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,12 +81,50 @@ public class AccountDAOImpl implements IAccountDAO {
 
     @Override
     public Optional<Account> findByIban(String iban) {
-        return Optional.empty();
+        String sql = "SELECT * FROM accounts WHERE iban = ?";
+
+        try (Connection conn = DBHelper.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, iban);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Account account = new Account();
+                account.setIban(rs.getString("iban"));
+                account.setBalance(rs.getBigDecimal("balance"));
+                return Optional.of(account);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+
+        }
+
     }
 
     @Override
     public List<Account> findAll() {
-        return List.of();
+        List<Account> accounts = new ArrayList<>();
+        String sql = "SELECT * FROM accounts";
+
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Account account = new Account();
+                account.setIban(rs.getString("iban"));
+                account.setBalance(rs.getBigDecimal("balance"));
+                accounts.add(account);
+            }
+
+            return accounts;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding all accounts: " + e.getMessage());
+        }
+
     }
 
     @Override
