@@ -1,6 +1,6 @@
 package gr.aueb.cf.ch18.bankapp_mysql.bankapp.dao;
 
-import gr.aueb.cf.ch18.bankapp.model.Account;
+import gr.aueb.cf.ch18.bankapp_mysql.bankapp.model.Account;
 import gr.aueb.cf.ch18.bankapp_mysql.bankapp.core.DBHelper;
 
 import java.sql.Connection;
@@ -99,7 +99,7 @@ public class AccountDAOImpl implements IAccountDAO {
                 return Optional.empty();
             }
         } catch (SQLException e) {
-
+            throw new RuntimeException("Error finding account by IBAN: " + e.getMessage());
         }
 
     }
@@ -129,7 +129,20 @@ public class AccountDAOImpl implements IAccountDAO {
 
     @Override
     public long count() {
-        return 0;
+        String sql = "SELECT count(*) FROM accounts";
+
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+            return 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error counting accounts: " + e.getMessage());
+        }
     }
 
     @Override
